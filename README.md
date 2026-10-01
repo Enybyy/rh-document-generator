@@ -1,10 +1,42 @@
+<div align="center">
+
 # Generar RH
 
-Genera documentos Word por lote a partir de Excel y una plantilla con etiquetas, con revisión por fila y descarga ZIP. Incluye un modelo de contrato de prestación de servicios de dos hojas, con cláusulas numeradas y firmas.
+Documentos Word por lote a partir de datos tabulares y una plantilla, con revisión de filas antes de generar los archivos.
 
-![Aplicación Generar RH](assets/screenshots/rh-desktop.png)
+<a href="https://enybyy.github.io/rh-document-generator/"><img src="docs/media/demo.svg" width="360" alt="Abrir demo"></a>
 
-[Probar la demo](https://enybyy.github.io/rh-document-generator/) · [Captura para portafolio](assets/screenshots/rh-upwork.png)
+<p><a href="https://github.com/Enybyy"><img src="docs/media/github.svg" width="112" alt="GitHub de Eliud Rojas Mendoza"></a>
+<a href="https://www.linkedin.com/in/eliud-rojas-mendoza-414652212/"><img src="docs/media/linkedin.svg" width="112" alt="LinkedIn de Eliud Rojas Mendoza"></a>
+<a href="https://www.upwork.com/freelancers/~01471ca462b236e8e5"><img src="docs/media/upwork.svg" width="112" alt="Upwork de Eliud Rojas Mendoza"></a></p>
+
+[![Generar RH en uso](assets/screenshots/rh-desktop.png)](https://enybyy.github.io/rh-document-generator/)
+
+*Captura real de Generar RH con datos ficticios de ejemplo.*
+
+[Acerca del proyecto](#acerca-del-proyecto) · [Capturas](#capturas) · [Uso e instalación](#uso-e-instalación)
+
+</div>
+
+## Acerca del proyecto
+
+Generar RH conecta una tabla de registros con los campos de un documento. La aplicación permite revisar los datos, seleccionar las filas válidas y preparar un lote de archivos Word con un resumen de la generación.
+
+La demo pública recorre el proceso con una plantilla de muestra. La aplicación local en Python acepta Excel y plantillas DOCX propias, conservando el formato del documento mientras sustituye sus etiquetas. La revisión forma parte del recorrido, antes de descargar el lote.
+
+## Capturas
+
+<details>
+<summary><strong>La aplicación en móvil</strong></summary>
+
+![La aplicación en móvil](assets/screenshots/rh-mobile.png)
+
+</details>
+
+## Uso e instalación
+
+<details>
+<summary><strong>Ver el recorrido, las instrucciones y las notas técnicas</strong></summary>
 
 ## Ejecutar la aplicación
 
@@ -78,3 +110,17 @@ Los proyectos DNI y teclado tienen repositorios independientes: [DNI Identity Va
 ## English
 
 Generate editable Word documents from spreadsheet rows and a tagged template. The public demo creates real DOCX files in the browser with fictional data; the local Python application accepts XLSX and custom DOCX templates, supports an optional employee join, and exports a ZIP plus an Excel review report. It is a local document automation tool, not a tax receipt issuer or identity verification service.
+
+</details>
+
+---
+
+<div align="center">
+
+**Eliud Rojas Mendoza · Enybyy**
+
+<p><a href="https://github.com/Enybyy"><img src="docs/media/github.svg" width="112" alt="GitHub de Eliud Rojas Mendoza"></a>
+<a href="https://www.linkedin.com/in/eliud-rojas-mendoza-414652212/"><img src="docs/media/linkedin.svg" width="112" alt="LinkedIn de Eliud Rojas Mendoza"></a>
+<a href="https://www.upwork.com/freelancers/~01471ca462b236e8e5"><img src="docs/media/upwork.svg" width="112" alt="Upwork de Eliud Rojas Mendoza"></a></p>
+
+</div>
