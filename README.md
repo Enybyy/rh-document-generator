@@ -14,44 +14,27 @@ Documentos Word por lote a partir de datos tabulares y una plantilla, con revisi
 
 *Captura real de Generar RH con datos ficticios de ejemplo.*
 
-[Acerca del proyecto](#acerca-del-proyecto) · [Capturas](#capturas) · [Uso e instalación](#uso-e-instalación)
+[Acerca del proyecto](#acerca-del-proyecto) · [Recorrido](#en-el-día-a-día) · [Tecnología](#cómo-está-construido) · [Uso local](#uso-local)
 
 </div>
 
 ## Acerca del proyecto
 
-Generar RH conecta una tabla de registros con los campos de un documento. La aplicación permite revisar los datos, seleccionar las filas válidas y preparar un lote de archivos Word con un resumen de la generación.
+Preparar documentos de personal suele repetir la misma estructura para distintos registros: cambiar nombres, fechas e importes y revisar que el formato siga siendo consistente. Generar RH reúne esa preparación en un lote, conectando los datos de una tabla con los campos de la plantilla Word.
 
-La demo pública recorre el proceso con una plantilla de muestra. La aplicación local en Python acepta Excel y plantillas DOCX propias, conservando el formato del documento mientras sustituye sus etiquetas. La revisión forma parte del recorrido, antes de descargar el lote.
+La revisión permite detectar filas pendientes antes de generar los archivos. Una vez seleccionados los registros, el documento conserva su formato y cada persona recibe un archivo editable, acompañado por el resumen del lote. La demo recorre el flujo con una plantilla de muestra; la aplicación Python acepta Excel y plantillas propias.
 
-## Capturas
+## En el día a día
 
-<details>
-<summary><strong>La aplicación en móvil</strong></summary>
+| Dentro del proyecto | Detalle |
+| --- | --- |
+| Datos y plantilla | Vinculación de columnas de Excel con etiquetas de un documento Word. |
+| Revisión del lote | Validación por fila y selección de registros antes de generar. |
+| Documentos editables | Sustitución de etiquetas conservando el formato del DOCX. |
+| Entrega del lote | Descarga ZIP, documentos individuales y resumen de generación. |
+| Dos formas de recorrerlo | Demo de navegador con plantilla de muestra y aplicación local con plantillas propias. |
 
-![La aplicación en móvil](assets/screenshots/rh-mobile.png)
-
-</details>
-
-## Uso e instalación
-
-<details>
-<summary><strong>Ver el recorrido, las instrucciones y las notas técnicas</strong></summary>
-
-## Ejecutar la aplicación
-
-Python 3.12 o superior. Desde la carpeta del proyecto:
-
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-python app.py
-```
-
-Abre `http://127.0.0.1:5081`. En Linux/macOS activa el entorno con `source .venv/bin/activate`. El servidor usa Waitress y escucha únicamente en el equipo local. Para desplegar con archivos de personas reales se necesita configurar autenticación, HTTPS y límites de concurrencia adecuados.
-
-## Uso
+## Explorar la demo
 
 1. Descarga el Excel y la plantilla de ejemplo desde la aplicación, o prepara tus propios archivos.
 2. Usa la primera hoja del XLSX con encabezados en su primera fila. Escribe etiquetas como `[NOMBRE]`, `[DNI]` o `{{ FECHA_INICIO }}` en Word.
@@ -92,7 +75,35 @@ La función `receipts.extract_receipt(bytes)` y `POST /api/receipt` conservan la
 - El reemplazo está limitado al contenido Word soportado; no interpreta campos de combinación nativos ni actualiza índices o fórmulas de Word.
 - La salida principal es DOCX. Puedes exportar PDF desde tu editor; no se requiere Word instalado para generar.
 
-## Verificación
+## Cómo está construido
+
+| Área | Tecnología |
+| --- | --- |
+| Aplicación local | Python, Flask y Waitress |
+| Documentos y tablas | python-docx y openpyxl |
+| Demo | HTML, CSS y JavaScript; generación DOCX en navegador |
+| Verificación | pytest y Playwright |
+
+## Uso local
+
+<details>
+<summary><strong>Ejecutar en tu equipo</strong></summary>
+
+Python 3.12 o superior. Desde la carpeta del proyecto:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Abre `http://127.0.0.1:5081`. En Linux/macOS activa el entorno con `source .venv/bin/activate`. El servidor usa Waitress y escucha únicamente en el equipo local. Para desplegar con archivos de personas reales se necesita configurar autenticación, HTTPS y límites de concurrencia adecuados.
+
+</details>
+
+<details>
+<summary><strong>Verificación</strong></summary>
 
 ```powershell
 python -m pip install -r requirements-dev.txt
@@ -101,13 +112,19 @@ python -m pytest -q
 
 Los tests cubren sustitución entre fragmentos, formato, tablas anidadas, encabezados/pies, selección, cruce, fechas, importes, nombres duplicados, errores de archivo y API. `scripts/browser-test.cjs` prueba la UI y captura escritorio/móvil usando Playwright, con servidores local en 5081 y estático en 5085.
 
-## Origen y consolidación
+</details>
+
+<details>
+<summary><strong>Origen y consolidación</strong></summary>
 
 Se reconstruyó desde el generador Excel→Word de `business-automation-suite`, incorporando revisión y selección. La otra variante automatizaba extracción de PDFs desde Drive: su extracción local queda en `receipts.py`; la integración específica se retiró. `contract-automation-system` solo tenía carga de plantillas/fuentes, sin motor de generación, y queda retirado en favor de este proyecto. Consulta [la comparación](docs/CONSOLIDATION.md).
 
 Los proyectos DNI y teclado tienen repositorios independientes: [DNI Identity Validator](https://github.com/Enybyy/dni-identity-validator) y [Keyboard Event Lab](https://github.com/Enybyy/keyboard-event-lab).
 
-## English
+</details>
+
+<details>
+<summary><strong>English</strong></summary>
 
 Generate editable Word documents from spreadsheet rows and a tagged template. The public demo creates real DOCX files in the browser with fictional data; the local Python application accepts XLSX and custom DOCX templates, supports an optional employee join, and exports a ZIP plus an Excel review report. It is a local document automation tool, not a tax receipt issuer or identity verification service.
 
