@@ -1,0 +1,18 @@
+# Dirección de diseño
+
+Un repositorio para la aplicación Generar RH, con su demo en la raíz.
+
+## Generar RH
+Qué es: genera documentos Word por lote usando Excel y una plantilla. Para quién: equipos administrativos y clientes de automatización. Objetivo: probar la selección, revisión y descarga antes de instalar Python.
+
+Colores: tinta #19334A (texto/navegación), niebla #EEF3F6 (fondo), papel #FFFFFF (documento), petróleo #087F75 (acción), gris #526675 (secundario), ámbar #9A5B00 (incidencias).
+Tipografía: Segoe UI para controles; Georgia para el documento, evocando la salida Word.
+Layout: escritorio administrativo alineado a la izquierda, con tabla editable y vista previa de papel.
+
+```text
+marca                         demo / código
+título                       descargar
+[registros seleccionables] | [documento]
+[cargar Excel/Word]         | [campos]
+```
+Principio: el documento final dirige la experiencia. Sin estadísticas de ahorro inventadas ni generación simulada mediante temporizadores.

@@ -1,102 +1,78 @@
-## 🇬🇧 English Summary
+# Generar RH
 
-**A suite of Python/Flask tools that remove repetitive administrative work from daily operations.**
+Genera documentos Word por lote a partir de Excel y una plantilla con etiquetas, con revisión por fila y descarga ZIP.
 
-**The problem:** recurring manual processes — HR paperwork, document handling, high-volume repetitive tasks — were consuming hours of staff time every week.
+![Aplicación Generar RH](assets/screenshots/rh-desktop.png)
 
-**The solution:** a collection of automation tools designed so non-technical staff can run each one without touching code.
+[Probar la demo](https://enybyy.github.io/rh-document-generator/) · [Captura para portafolio](assets/screenshots/rh-upwork.png)
 
-- HR process automation for recurring personnel workflows
-- Automated document processing and generation
-- Productivity utilities for high-volume repetitive tasks
+## Ejecutar la aplicación
 
-**Impact:** processes that required manual attention now run unattended.
+Python 3.12 o superior. Desde la carpeta del proyecto:
 
-**Stack:** Python · Flask · Pandas · python-docx
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python app.py
+```
 
-🔗 **[Live demo](https://enybyy.github.io/business-automation-suite/)**
+Abre `http://127.0.0.1:5081`. En Linux/macOS activa el entorno con `source .venv/bin/activate`. El servidor usa Waitress y escucha únicamente en el equipo local. Para desplegar con archivos de personas reales se necesita configurar autenticación, HTTPS y límites de concurrencia adecuados.
 
----
+## Uso
 
-<details>
-<summary>📖 <b>Documentación completa en español</b> (click para expandir)</summary>
+1. Descarga el Excel y la plantilla de ejemplo desde la aplicación, o prepara tus propios archivos.
+2. Usa la primera hoja del XLSX con encabezados en su primera fila. Escribe etiquetas como `[NOMBRE]`, `[DNI]` o `{{ FECHA_INICIO }}` en Word.
+3. Carga XLSX y DOCX. Opcionalmente carga una base de personal con DNI único para completar o sustituir los campos del mismo DNI.
+4. Revisa los errores por fila y selecciona los registros válidos.
+5. Descarga un ZIP con un Word por registro, `revision.xlsx` y `resumen.json`.
 
-# ⚙️ Business Automation Suite — Automatización de Procesos Empresariales (Python / Flask / RPA)
-> **Suite integral de herramientas y microaplicaciones para automatización de Recursos Humanos, procesamiento masivo de documentos Word/Excel y utilidades de productividad.**
+Las etiquetas se vinculan a los encabezados normalizados: mayúsculas, sin tildes, espacios convertidos a `_`. Se mantienen alias heredados como `NUMERO DE DOCUMENTO → DNI`, `APELLIDOS Y NOMBRES → NOMBRE`, `SALARIO → PAGO` y `FECHA DE INICIO → FECHA_INICIO`. Puedes usar otras columnas y etiquetas con el mismo nombre. DNI se comprueba como formato de ocho dígitos, no como identidad real. Guarda identificadores como texto en Excel; un DNI numérico entero se completa a ocho dígitos.
 
-<p align="center">
-  <a href="https://enybyy.github.io/business-automation-suite/" target="_blank">
-    <img src="https://img.shields.io/badge/▶️_PROBAR_DEMO_EN_VIVO-GitHub_Pages-22c55e?style=for-the-badge&logo=github&logoColor=white" alt="Demo en Vivo" />
-  </a>
-  <a href="https://www.linkedin.com/in/eliud-rojas-mendoza-414652212/" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-Eliud_RM-0284c7?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-  </a>
-</p>
+El motor reemplaza etiquetas incluso si Word las dividió entre fragmentos de formato. Conserva el formato del primer fragmento de cada etiqueta, y el texto ajeno a las etiquetas; admite párrafos, tablas anidadas, encabezados y pies de primera página/pares. La vista web es una ficha de datos; no reproduce la maquetación exacta de una plantilla personalizada.
 
-<p align="center">
-  <img src="assets/screenshots/screenshot-suite-rrhh.png" alt="Extracción y Validación de RRHH" width="48%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" />
-  <img src="assets/screenshots/screenshot-suite-converter.png" alt="Herramienta Desktop de Optimización" width="48%" style="border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);" />
-</p>
+## Demo pública y aplicación local
 
-[![Python](https://img.shields.io/badge/Python-3.x-3776ab.svg)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Web%20Framework-Flask-black.svg)](https://flask.palletsprojects.com/)
-[![Deployment](https://img.shields.io/badge/Cloud%20Deploy-Render%20Ready-46E3B7.svg)](#-despliegue-en-la-nube-render)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+| Función | Demo GitHub Pages | Aplicación Python |
+|---|---|---|
+| Editar datos de muestra y seleccionar filas | Sí | Sí |
+| Generar y descargar Word reales | Sí, plantilla fija de muestra | Sí, plantilla del usuario |
+| Importar datos | CSV | XLSX |
+| Reporte | CSV dentro del ZIP | XLSX dentro del ZIP |
+| Cruce por DNI | No | Base de personal opcional |
+| Procesamiento | Navegador, sin llamadas externas | Memoria de la petición, sin guardar cargas |
 
----
+La demo no consulta identidad ni emite recibos fiscales. RH se refiere a recursos humanos. Los documentos de ejemplo contienen datos ficticios. No se usa un temporizador para simular una descarga.
 
-## 📌 El Desafío de Negocio
+## Extracción opcional de recibos PDF
 
-En empresas medianas y departamentos operativos, el trabajo diario está saturado de tareas repetitivas de bajo valor que consumen el tiempo del equipo:
-- **Carga de Datos Manual en Recursos Humanos**: Extraer información de expedientes PDF y tipear cada dato en planillas internas de control toma decenas de horas semanales y genera errores frecuentes.
-- **Generación Repetitiva de Formatos**: Crear oficios combinando plantillas Word con bases de datos Excel sin un sistema ágil conduce a pérdidas de tiempo.
-- **Cuellos de Botella en Archivos Gráficos**: Convertir manualmente cientos de imágenes WebP a PNG/JPG ralentiza los flujos de marketing y diseño.
+La función `receipts.extract_receipt(bytes)` y `POST /api/receipt` conservan la extracción local de serie, fecha y total del flujo antiguo. El campo multipart se llama `pdf`. Funciona con PDFs que contienen texto, devuelve campos faltantes para revisión manual y no valida documentos fiscales. No descarga archivos de Drive ni requiere credenciales; no realiza OCR. Los formatos distintos requieren adaptar los patrones.
 
----
+## Límites y errores
 
-## 💡 La Solución Implementada
+- 500 filas, 100 columnas, 10 MB por archivo, 25 MB por petición y 64 MB de documentos por lote.
+- Rechaza fórmulas, encabezados vacíos/duplicados, documentos corruptos, macros y paquetes descomprimidos excesivos.
+- DNI duplicado en la base de personal bloquea el cruce ambiguo. Filas sin coincidencia quedan pendientes.
+- Fechas inválidas, fin anterior al inicio, importes inválidos (punto decimal, hasta dos decimales, sin separadores de miles) y etiquetas sin datos excluyen la fila de la generación.
+- Los nombres de archivo se sanean y llevan índice para evitar sobreescrituras. El reporte neutraliza fórmulas de hojas de cálculo.
+- El reemplazo está limitado al contenido Word soportado; no interpreta campos de combinación nativos ni actualiza índices o fórmulas de Word.
+- La salida principal es DOCX. Puedes exportar PDF desde tu editor; no se requiere Word instalado para generar.
 
-**Business Automation Suite** agrupa soluciones modulares de software orientadas a erradicar el trabajo manual:
+## Verificación
 
-1. **Sistema Web de Automatización para RRHH (`Automatizacion/Web/Automatizar_RH`)**:
-   - Aplicación Flask cloud-ready (Render).
-   - Extracción inteligente de datos de PDF, validación de reglas de negocio y carga automática en Google Sheets.
-2. **Motor de Reemplazo Masivo Word-Excel (`Automatizacion/Reemplazar_formato`)**:
-   - Generación instantánea de formatos por lotes.
-3. **Suite Desktop para Conversión Masiva de Imágenes (`Conversor_Imagenes`)**:
-   - Ejecutable compilado (.exe) para Windows que procesa imágenes por lotes con 64% de ahorro en peso.
+```powershell
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
+```
 
-👉 **[Prueba la Demo Interactiva en Vivo aquí](https://enybyy.github.io/business-automation-suite/)**
+Los tests cubren sustitución entre fragmentos, formato, tablas anidadas, encabezados/pies, selección, cruce, fechas, importes, nombres duplicados, errores de archivo y API. `scripts/browser-test.cjs` prueba la UI y captura escritorio/móvil usando Playwright, con servidores local en 5081 y estático en 5085.
 
----
+## Origen y consolidación
 
-## 📈 Impacto y Mejoras Conseguidas
+Se reconstruyó desde el generador Excel→Word de `business-automation-suite`, incorporando revisión y selección. La otra variante automatizaba extracción de PDFs desde Drive: su extracción local queda en `receipts.py`; la integración específica se retiró. `contract-automation-system` solo tenía carga de plantillas/fuentes, sin motor de generación, y queda retirado en favor de este proyecto. Consulta [la comparación](docs/CONSOLIDATION.md).
 
-| Proceso Automatizado | Operación Manual Previa | Con Business Automation Suite | Impacto Directo |
-|---|---|---|---|
-| **Procesamiento de Documentos RRHH** | 10 a 15 minutos por expediente | Menos de 30 segundos | **Ahorro de más de 25 horas hombre por semana** |
-| **Generación de Formatos Word/Excel** | Tipeo manual documento por documento | Generación por lotes automatizada | **Reducción de errores humanos a 0%** |
-| **Conversión Masiva de Imágenes** | Conversión una a una en páginas web | Procesamiento en bloque local en 1 clic | **Optimización del flujo de trabajo multimedia** |
-| **Despliegue Cloud** | Scripts aislados | Aplicaciones web cloud-ready en Render | **Acceso centralizado para todo el equipo** |
+Los proyectos DNI y teclado tienen repositorios independientes: [DNI Identity Validator](https://github.com/Enybyy/dni-identity-validator) y [Keyboard Event Lab](https://github.com/Enybyy/keyboard-event-lab).
 
----
+## English
 
-## 🛠️ Stack Tecnológico
-
-- **Backend**: Python 3, Flask, Jinja2 Templates.
-- **Procesamiento Documental**: Pandas, OpenPyXL, python-docx, PyPDF2, Pillow.
-- **Cloud & DevOps**: Render, Gunicorn, Procfile.
-- **Desktop**: Tkinter GUI compilado con PyInstaller.
-
----
-
-## 📬 ¿Tienes procesos manuales que están frenando a tu equipo?
-
-Diseño y construyo **automatizaciones de procesos (RPA ligero), scripts de integración entre Excel, Word, PDFs y APIs, y aplicaciones web a medida**.
-
-- **LinkedIn**: [Eliud RM](https://www.linkedin.com/in/eliud-rojas-mendoza-414652212/)
-- **GitHub**: [@Enybyy](https://github.com/Enybyy)
-- *Disponible para proyectos freelance y consultoría tecnológica.*
-
-
-</details>
+Generate editable Word documents from spreadsheet rows and a tagged template. The public demo creates real DOCX files in the browser with fictional data; the local Python application accepts XLSX and custom DOCX templates, supports an optional employee join, and exports a ZIP plus an Excel review report. It is a local document automation tool, not a tax receipt issuer or identity verification service.
