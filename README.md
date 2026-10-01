@@ -2,94 +2,95 @@
 
 # Generar RH
 
-Documentos Word por lote a partir de datos tabulares y una plantilla, con revisión de filas antes de generar los archivos.
+Batch Word documents from tabular data and a template, with row review before file generation.
 
-<a href="https://enybyy.github.io/rh-document-generator/"><img src="docs/media/demo.svg" width="360" alt="Abrir demo"></a>
+<a href="https://enybyy.github.io/rh-document-generator/"><img src="docs/media/demo.svg" width="360" alt="Open demo"></a>
 
-<p><a href="https://github.com/Enybyy"><img src="docs/media/github.svg" width="112" alt="GitHub de Eliud Rojas Mendoza"></a>
-<a href="https://www.linkedin.com/in/eliud-rojas-mendoza-414652212/"><img src="docs/media/linkedin.svg" width="112" alt="LinkedIn de Eliud Rojas Mendoza"></a>
-<a href="https://www.upwork.com/freelancers/~01471ca462b236e8e5"><img src="docs/media/upwork.svg" width="112" alt="Upwork de Eliud Rojas Mendoza"></a></p>
+<p><a href="https://github.com/Enybyy"><img src="docs/media/github.svg" width="112" alt="Eliud Rojas Mendoza on GitHub"></a>
+<a href="https://www.linkedin.com/in/eliud-rojas-mendoza-414652212/"><img src="docs/media/linkedin.svg" width="112" alt="Eliud Rojas Mendoza on LinkedIn"></a>
+<a href="https://www.upwork.com/freelancers/~01471ca462b236e8e5"><img src="docs/media/upwork.svg" width="112" alt="Eliud Rojas Mendoza on Upwork"></a></p>
 
-[![Generar RH en uso](assets/screenshots/rh-desktop.png)](https://enybyy.github.io/rh-document-generator/)
+[![Generar RH in use](assets/screenshots/rh-desktop.png)](https://enybyy.github.io/rh-document-generator/)
 
-*Captura real de Generar RH con datos ficticios de ejemplo.*
+*Actual Generar RH screenshot with fictional sample data.*
 
-[Acerca del proyecto](#acerca-del-proyecto) · [Recorrido](#en-el-día-a-día) · [Tecnología](#cómo-está-construido) · [Uso local](#uso-local)
+[About](#about-the-project) · [Workflow](#everyday-workflow) · [Technology](#built-with) · [Run locally](#local-use)
 
 </div>
 
-## Acerca del proyecto
 
-Preparar documentos de personal suele repetir la misma estructura para distintos registros: cambiar nombres, fechas e importes y revisar que el formato siga siendo consistente. Generar RH reúne esa preparación en un lote, conectando los datos de una tabla con los campos de la plantilla Word.
+## About the project
 
-La revisión permite detectar filas pendientes antes de generar los archivos. Una vez seleccionados los registros, el documento conserva su formato y cada persona recibe un archivo editable, acompañado por el resumen del lote. La demo recorre el flujo con una plantilla de muestra; la aplicación Python acepta Excel y plantillas propias.
+Preparing personnel documents often repeats the same structure for different records: change names, dates and amounts, then check that formatting remains consistent. Generar RH brings that preparation into a batch, connecting table data to fields in a Word template.
 
-## En el día a día
+Review makes incomplete rows visible before generation. Once records are selected, each person receives an editable file, accompanied by a batch summary. The demo follows the workflow with a sample template; the Python application accepts Excel files and custom templates.
 
-| Dentro del proyecto | Detalle |
+## Everyday workflow
+
+| Inside the project | Detail |
 | --- | --- |
-| Datos y plantilla | Vinculación de columnas de Excel con etiquetas de un documento Word. |
-| Revisión del lote | Validación por fila y selección de registros antes de generar. |
-| Documentos editables | Sustitución de etiquetas conservando el formato del DOCX. |
-| Entrega del lote | Descarga ZIP, documentos individuales y resumen de generación. |
-| Dos formas de recorrerlo | Demo de navegador con plantilla de muestra y aplicación local con plantillas propias. |
+| Data and template | Match Excel columns to tags in a Word document. |
+| Batch review | Validate each row and select records before generation. |
+| Editable documents | Replace tags while preserving supported DOCX formatting. |
+| Batch delivery | ZIP download, individual documents and generation summary. |
+| Two ways to explore | Browser demo with a sample template; local app with custom templates. |
 
-## Explorar la demo
+## Explore the workflow
 
-1. Descarga el Excel y la plantilla de ejemplo desde la aplicación, o prepara tus propios archivos.
-2. Usa la primera hoja del XLSX con encabezados en su primera fila. Escribe etiquetas como `[NOMBRE]`, `[DNI]` o `{{ FECHA_INICIO }}` en Word.
-3. Carga XLSX y DOCX. Opcionalmente carga una base de personal con DNI único para completar o sustituir los campos del mismo DNI.
-4. Revisa los errores por fila y selecciona los registros válidos.
-5. Descarga un ZIP con un Word por registro, `revision.xlsx` y `resumen.json`.
+1. Download the sample Excel file and template from the application, or prepare your own files for the local version.
+2. Use the first XLSX sheet with headers in its first row. Add tags such as `[NOMBRE]`, `[DNI]` or `{{ FECHA_INICIO }}` to Word.
+3. Upload XLSX and DOCX files. An optional employee database with unique DNIs can complete or replace fields for the matching DNI.
+4. Review row errors and select valid records.
+5. Download a ZIP with one Word file per record, `revision.xlsx` and `resumen.json`.
 
-Las etiquetas se vinculan a los encabezados normalizados: mayúsculas, sin tildes, espacios convertidos a `_`. Se mantienen alias heredados como `NUMERO DE DOCUMENTO → DNI`, `APELLIDOS Y NOMBRES → NOMBRE`, `SALARIO → PAGO` y `FECHA DE INICIO → FECHA_INICIO`. Puedes usar otras columnas y etiquetas con el mismo nombre. DNI se comprueba como formato de ocho dígitos, no como identidad real. Guarda identificadores como texto en Excel; un DNI numérico entero se completa a ocho dígitos.
+Tags match normalized headers: uppercase, without accents, with spaces replaced by `_`. Existing aliases remain `NUMERO DE DOCUMENTO → DNI`, `APELLIDOS Y NOMBRES → NOMBRE`, `SALARIO → PAGO` and `FECHA DE INICIO → FECHA_INICIO`. Other columns and matching tags can also be used. DNI checks validate an eight-digit format, not real identity. Keep identifiers as text in Excel; an integer numeric DNI is padded to eight digits.
 
-El motor reemplaza etiquetas incluso si Word las dividió entre fragmentos de formato. Conserva el formato del primer fragmento de cada etiqueta, y el texto ajeno a las etiquetas; admite párrafos, tablas anidadas, encabezados y pies de primera página/pares. El modelo incluido se muestra en dos hojas navegables. Tras generar el lote, puedes recorrer los contratos, ver sus hojas y descargar un Word individual o el ZIP completo. Con una plantilla personalizada se muestra un resumen de los datos utilizados; el DOCX conserva su maquetación original y debe abrirse en Word para consultar sus hojas.
+The engine replaces tags even when Word splits them across formatting runs. It retains the first run's formatting for each tag and preserves surrounding text. Supported content includes paragraphs, nested tables, headers and footers, including first-page and even-page variants. The included sample has two navigable pages. After generation, browse contracts and download individual Word files or the full ZIP. Custom templates show a field summary; open the generated DOCX in Word to view its original page layout.
 
-## Demo pública y aplicación local
+## Public demo and local application
 
-| Función | Demo GitHub Pages | Aplicación Python |
-|---|---|---|
-| Editar datos de muestra y seleccionar filas | Sí | Sí |
-| Generar y descargar Word reales | Sí, plantilla fija de muestra | Sí, plantilla del usuario |
-| Importar datos | CSV | XLSX |
-| Reporte | CSV dentro del ZIP | XLSX dentro del ZIP |
-| Cruce por DNI | No | Base de personal opcional |
-| Procesamiento | Navegador, sin llamadas externas | Memoria de la petición, sin guardar cargas |
+| Capability | GitHub Pages demo | Python application |
+| --- | --- | --- |
+| Edit sample data and select rows | Yes | Yes |
+| Generate downloadable Word files | Yes, fixed sample template | Yes, custom template |
+| Import data | CSV | XLSX |
+| Review report | CSV inside the ZIP | XLSX inside the ZIP |
+| Join by DNI | No | Optional employee database |
+| Processing | Browser, no external calls | Request memory, uploads not saved |
 
-La demo no consulta identidad ni emite recibos fiscales. RH se refiere a recursos humanos. Los documentos de ejemplo contienen datos ficticios. No se usa un temporizador para simular una descarga. El contrato de referencia requiere completar la empresa, RUC, representante, alcance y condiciones de pago antes de utilizarlo.
+RH refers to human resources. The demo uses fictional data and generates actual files; it does not query identity records or issue tax receipts. The sample contract needs company details, RUC, representative, scope and payment terms completed before use.
 
-![Hojas de contratos generados](assets/screenshots/rh-generated.png)
+![Pages of generated contracts](assets/screenshots/rh-generated.png)
 
-## Extracción opcional de recibos PDF
+## Optional PDF receipt extraction
 
-La función `receipts.extract_receipt(bytes)` y `POST /api/receipt` conservan la extracción local de serie, fecha y total del flujo antiguo. El campo multipart se llama `pdf`. Funciona con PDFs que contienen texto, devuelve campos faltantes para revisión manual y no valida documentos fiscales. No descarga archivos de Drive ni requiere credenciales; no realiza OCR. Los formatos distintos requieren adaptar los patrones.
+The function `receipts.extract_receipt(bytes)` and `POST /api/receipt` retain local extraction of series, date and total from the earlier workflow. The multipart field is named `pdf`. It handles text-containing PDFs and reports missing fields for manual review. It does not authenticate tax documents, download from Drive, require credentials or perform OCR. Different layouts require adjusted patterns.
 
-## Límites y errores
+## Limits and errors
 
-- 500 filas, 100 columnas, 10 MB por archivo, 25 MB por petición y 64 MB de documentos por lote.
-- Rechaza fórmulas, encabezados vacíos/duplicados, documentos corruptos, macros y paquetes descomprimidos excesivos.
-- DNI duplicado en la base de personal bloquea el cruce ambiguo. Filas sin coincidencia quedan pendientes.
-- Fechas inválidas, fin anterior al inicio, importes inválidos (punto decimal, hasta dos decimales, sin separadores de miles) y etiquetas sin datos excluyen la fila de la generación.
-- Los nombres de archivo se sanean y llevan índice para evitar sobreescrituras. El reporte neutraliza fórmulas de hojas de cálculo.
-- El reemplazo está limitado al contenido Word soportado; no interpreta campos de combinación nativos ni actualiza índices o fórmulas de Word.
-- La salida principal es DOCX. Puedes exportar PDF desde tu editor; no se requiere Word instalado para generar.
+- 500 rows, 100 columns, 10 MB per file, 25 MB per request and 64 MB of generated documents per batch.
+- Rejects formulas, empty or duplicate headers, corrupt documents, macros and excessively large unpacked archives.
+- Duplicate DNIs in the employee database block ambiguous joins. Unmatched rows remain pending.
+- Invalid dates, an end date before the start, invalid amounts and missing tag values exclude a row. Amounts use a decimal point, up to two decimals and no thousands separators.
+- Filenames are sanitized and indexed to prevent overwriting. Spreadsheet reports neutralize formula prefixes.
+- Replacement is limited to supported Word content; it does not interpret native mail-merge fields or update Word indexes or formulas.
+- Primary output is DOCX. Export PDF from your editor if needed; Word is not required to generate files.
 
-## Cómo está construido
+## Built with
 
-| Área | Tecnología |
+| Area | Technology |
 | --- | --- |
-| Aplicación local | Python, Flask y Waitress |
-| Documentos y tablas | python-docx y openpyxl |
-| Demo | HTML, CSS y JavaScript; generación DOCX en navegador |
-| Verificación | pytest y Playwright |
+| Local application | Python, Flask and Waitress |
+| Documents and spreadsheets | python-docx and openpyxl |
+| Demo | HTML, CSS and JavaScript; browser-based DOCX generation |
+| Verification | pytest and Playwright |
 
-## Uso local
+## Local use
 
 <details>
-<summary><strong>Ejecutar en tu equipo</strong></summary>
+<summary><strong>Run on your computer</strong></summary>
 
-Python 3.12 o superior. Desde la carpeta del proyecto:
+Python 3.12+ is required. From the project folder:
 
 ```powershell
 python -m venv .venv
@@ -98,35 +99,28 @@ python -m pip install -r requirements.txt
 python app.py
 ```
 
-Abre `http://127.0.0.1:5081`. En Linux/macOS activa el entorno con `source .venv/bin/activate`. El servidor usa Waitress y escucha únicamente en el equipo local. Para desplegar con archivos de personas reales se necesita configurar autenticación, HTTPS y límites de concurrencia adecuados.
+Open `http://127.0.0.1:5081`. On Linux/macOS, activate with `source .venv/bin/activate`. Waitress listens on the local computer only. Deployments handling real personnel files need authentication, HTTPS and appropriate concurrency limits.
 
 </details>
 
 <details>
-<summary><strong>Verificación</strong></summary>
+<summary><strong>Verification</strong></summary>
 
 ```powershell
 python -m pip install -r requirements-dev.txt
 python -m pytest -q
 ```
 
-Los tests cubren sustitución entre fragmentos, formato, tablas anidadas, encabezados/pies, selección, cruce, fechas, importes, nombres duplicados, errores de archivo y API. `scripts/browser-test.cjs` prueba la UI y captura escritorio/móvil usando Playwright, con servidores local en 5081 y estático en 5085.
+Tests cover replacement across runs, formatting, nested tables, headers/footers, selection, joins, dates, amounts, duplicate filenames, file errors and API behavior. `scripts/browser-test.cjs` checks the interface and captures it with Playwright, using the local server on 5081 and static server on 5085.
 
 </details>
 
 <details>
-<summary><strong>Origen y consolidación</strong></summary>
+<summary><strong>Origin and consolidation</strong></summary>
 
-Se reconstruyó desde el generador Excel→Word de `business-automation-suite`, incorporando revisión y selección. La otra variante automatizaba extracción de PDFs desde Drive: su extracción local queda en `receipts.py`; la integración específica se retiró. `contract-automation-system` solo tenía carga de plantillas/fuentes, sin motor de generación, y queda retirado en favor de este proyecto. Consulta [la comparación](docs/CONSOLIDATION.md).
+Rebuilt from the Excel-to-Word generator in `business-automation-suite`, with review and selection added. Another variant extracted PDFs from Drive; its local extraction remains in `receipts.py`, while the specific integration was retired. `contract-automation-system` had template/source uploads but no complete generation engine and was retired in favor of this project. See [the comparison](docs/CONSOLIDATION.md).
 
-Los proyectos DNI y teclado tienen repositorios independientes: [DNI Identity Validator](https://github.com/Enybyy/dni-identity-validator) y [Keyboard Event Lab](https://github.com/Enybyy/keyboard-event-lab).
-
-</details>
-
-<details>
-<summary><strong>English</strong></summary>
-
-Generate editable Word documents from spreadsheet rows and a tagged template. The public demo creates real DOCX files in the browser with fictional data; the local Python application accepts XLSX and custom DOCX templates, supports an optional employee join, and exports a ZIP plus an Excel review report. It is a local document automation tool, not a tax receipt issuer or identity verification service.
+The DNI and keyboard projects have independent repositories: [DNI Identity Validator](https://github.com/Enybyy/dni-identity-validator) and [Keyboard Event Lab](https://github.com/Enybyy/keyboard-event-lab).
 
 </details>
 
@@ -136,8 +130,8 @@ Generate editable Word documents from spreadsheet rows and a tagged template. Th
 
 **Eliud Rojas Mendoza · Enybyy**
 
-<p><a href="https://github.com/Enybyy"><img src="docs/media/github.svg" width="112" alt="GitHub de Eliud Rojas Mendoza"></a>
-<a href="https://www.linkedin.com/in/eliud-rojas-mendoza-414652212/"><img src="docs/media/linkedin.svg" width="112" alt="LinkedIn de Eliud Rojas Mendoza"></a>
-<a href="https://www.upwork.com/freelancers/~01471ca462b236e8e5"><img src="docs/media/upwork.svg" width="112" alt="Upwork de Eliud Rojas Mendoza"></a></p>
+<p><a href="https://github.com/Enybyy"><img src="docs/media/github.svg" width="112" alt="Eliud Rojas Mendoza on GitHub"></a>
+<a href="https://www.linkedin.com/in/eliud-rojas-mendoza-414652212/"><img src="docs/media/linkedin.svg" width="112" alt="Eliud Rojas Mendoza on LinkedIn"></a>
+<a href="https://www.upwork.com/freelancers/~01471ca462b236e8e5"><img src="docs/media/upwork.svg" width="112" alt="Eliud Rojas Mendoza on Upwork"></a></p>
 
 </div>
