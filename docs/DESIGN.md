@@ -16,3 +16,6 @@ título                       descargar
 [cargar Excel/Word]         | [campos]
 ```
 Principio: el documento final dirige la experiencia. Sin estadísticas de ahorro inventadas ni generación simulada mediante temporizadores.
+
+## Contratos y salida visible
+Mantener tinta, papel y petróleo. Priorizar capacidades reales de Python sobre el rótulo de demo. Contrato A4 de dos hojas con cláusulas numeradas y firmas; navegación de hojas en vista previa y documentos generados visibles tras descargar el lote. Una plantilla personalizada conserva su Word: su vista es un resumen de campos, no una reproducción de maquetación.

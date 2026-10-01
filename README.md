@@ -1,6 +1,6 @@
 # Generar RH
 
-Genera documentos Word por lote a partir de Excel y una plantilla con etiquetas, con revisión por fila y descarga ZIP.
+Genera documentos Word por lote a partir de Excel y una plantilla con etiquetas, con revisión por fila y descarga ZIP. Incluye un modelo de contrato de prestación de servicios de dos hojas, con cláusulas numeradas y firmas.
 
 ![Aplicación Generar RH](assets/screenshots/rh-desktop.png)
 
@@ -29,7 +29,7 @@ Abre `http://127.0.0.1:5081`. En Linux/macOS activa el entorno con `source .venv
 
 Las etiquetas se vinculan a los encabezados normalizados: mayúsculas, sin tildes, espacios convertidos a `_`. Se mantienen alias heredados como `NUMERO DE DOCUMENTO → DNI`, `APELLIDOS Y NOMBRES → NOMBRE`, `SALARIO → PAGO` y `FECHA DE INICIO → FECHA_INICIO`. Puedes usar otras columnas y etiquetas con el mismo nombre. DNI se comprueba como formato de ocho dígitos, no como identidad real. Guarda identificadores como texto en Excel; un DNI numérico entero se completa a ocho dígitos.
 
-El motor reemplaza etiquetas incluso si Word las dividió entre fragmentos de formato. Conserva el formato del primer fragmento de cada etiqueta, y el texto ajeno a las etiquetas; admite párrafos, tablas anidadas, encabezados y pies de primera página/pares. La vista web es una ficha de datos; no reproduce la maquetación exacta de una plantilla personalizada.
+El motor reemplaza etiquetas incluso si Word las dividió entre fragmentos de formato. Conserva el formato del primer fragmento de cada etiqueta, y el texto ajeno a las etiquetas; admite párrafos, tablas anidadas, encabezados y pies de primera página/pares. El modelo incluido se muestra en dos hojas navegables. Tras generar el lote, puedes recorrer los contratos, ver sus hojas y descargar un Word individual o el ZIP completo. Con una plantilla personalizada se muestra un resumen de los datos utilizados; el DOCX conserva su maquetación original y debe abrirse en Word para consultar sus hojas.
 
 ## Demo pública y aplicación local
 
@@ -42,7 +42,9 @@ El motor reemplaza etiquetas incluso si Word las dividió entre fragmentos de fo
 | Cruce por DNI | No | Base de personal opcional |
 | Procesamiento | Navegador, sin llamadas externas | Memoria de la petición, sin guardar cargas |
 
-La demo no consulta identidad ni emite recibos fiscales. RH se refiere a recursos humanos. Los documentos de ejemplo contienen datos ficticios. No se usa un temporizador para simular una descarga.
+La demo no consulta identidad ni emite recibos fiscales. RH se refiere a recursos humanos. Los documentos de ejemplo contienen datos ficticios. No se usa un temporizador para simular una descarga. El contrato de referencia requiere completar la empresa, RUC, representante, alcance y condiciones de pago antes de utilizarlo.
+
+![Hojas de contratos generados](assets/screenshots/rh-generated.png)
 
 ## Extracción opcional de recibos PDF
 
